@@ -56,6 +56,10 @@ type ResourceRecipe struct {
 	Name string `json:"name,omitempty"`
 	// Parameters are key/value parameters to pass into the recipe at deployment
 	Parameters map[string]any `json:"parameters,omitempty"`
+	// TemplateKind is the kind of the recipe template
+	TemplateKind string `json:"templateKind,omitempty"`
+	// TemplatePath is the path to the recipe template
+	TemplatePath string `json:"templatePath,omitempty"`
 	// DeploymentStatus is the deployment status of the recipe
 	DeploymentStatus util.RecipeDeploymentStatus `json:"recipeStatus,omitempty"`
 }

@@ -298,6 +298,18 @@ type Recipe struct {
 	Parameters map[string]any
 }
 
+// RecipeStatus - Recipe status at deployment time for a resource.
+type RecipeStatus struct {
+	// REQUIRED; Template kind is the kind of template.
+	TemplateKind *string
+
+	// REQUIRED; TemplatePath is the path specified in the recipe.
+	TemplatePath *string
+
+	// TemplateVersion is the version number of the template.
+	TemplateVersion *string
+}
+
 // RecipeUpdate - The recipe used to automatically deploy underlying infrastructure for a portable resource
 type RecipeUpdate struct {
 	// The name of the recipe within the environment to use
@@ -473,6 +485,9 @@ type ResourceStatus struct {
 
 	// Properties of an output resource
 	OutputResources []*OutputResource
+
+	// READ-ONLY; The recipe data at the time of deployment
+	Recipe *RecipeStatus
 }
 
 // SQLDatabaseListSecretsResult - The secret values for the given SqlDatabase resource

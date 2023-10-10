@@ -30,6 +30,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 
 	"github.com/radius-project/radius/pkg/recipes"
+	rpv1 "github.com/radius-project/radius/pkg/rp/v1"
 
 	"github.com/radius-project/radius/pkg/recipes/terraform"
 	recipes_util "github.com/radius-project/radius/pkg/recipes/util"
@@ -99,7 +100,7 @@ func (d *terraformDriver) Execute(ctx context.Context, opts ExecuteOptions) (*re
 		return nil, recipes.NewRecipeError(recipes.RecipeDeploymentFailed, err.Error(), recipes_util.ExecutionError, recipes.GetRecipeErrorDetails(err))
 	}
 
-	recipeOutputs, err := d.prepareRecipeResponse(ctx, tfState)
+	recipeOutputs, err := d.prepareRecipeResponse(ctx, opts.BaseOptions.Definition, tfState)
 	if err != nil {
 		return nil, recipes.NewRecipeError(recipes.InvalidRecipeOutputs, fmt.Sprintf("failed to read the recipe output %q: %s", recipes.ResultPropertyName, err.Error()), recipes_util.ExecutionError, recipes.GetRecipeErrorDetails(err))
 	}
@@ -136,7 +137,7 @@ func (d *terraformDriver) Delete(ctx context.Context, opts DeleteOptions) error 
 
 // prepareRecipeResponse populates the recipe response from the module output named "result" and the
 // resources deployed by the Terraform module. The outputs and resources are retrieved from the input Terraform JSON state.
-func (d *terraformDriver) prepareRecipeResponse(ctx context.Context, tfState *tfjson.State) (*recipes.RecipeOutput, error) {
+func (d *terraformDriver) prepareRecipeResponse(ctx context.Context, definition recipes.EnvironmentDefinition, tfState *tfjson.State) (*recipes.RecipeOutput, error) {
 	if tfState == nil || (*tfState == tfjson.State{}) {
 		return &recipes.RecipeOutput{}, errors.New("terraform state is empty")
 	}
@@ -146,7 +147,11 @@ func (d *terraformDriver) prepareRecipeResponse(ctx context.Context, tfState *tf
 	if moduleOutputs != nil {
 		// We populate the recipe response from the 'result' output (if set).
 		if result, ok := moduleOutputs[recipes.ResultPropertyName].Value.(map[string]any); ok {
-			err := recipeResponse.PrepareRecipeResponse(result)
+			err := recipeResponse.PrepareRecipeResponse(&rpv1.RecipeStatus{
+				TemplateKind:    recipes.TemplateKindTerraform,
+				TemplatePath:    definition.TemplatePath,
+				TemplateVersion: definition.TemplateVersion,
+			}, result)
 			if err != nil {
 				return &recipes.RecipeOutput{}, err
 			}

@@ -102,10 +102,26 @@ model KubernetesCompute extends EnvironmentCompute {
   `namespace`: string;
 }
 
+@doc("Recipe status at deployment time for a resource.")
+model RecipeStatus {
+  @doc("Template kind is the kind of template.")
+  templateKind: string;
+
+  @doc("TemplatePath is the path specified in the recipe.")
+  templatePath: string;
+
+  @doc("TemplateVersion is the version number of the template.")
+  templateVersion?: string;
+}
+
 @doc("Status of a resource.")
 model ResourceStatus {
   @doc("The compute resource associated with the resource.")
   compute?: EnvironmentCompute;
+
+  @doc("The recipe data at the time of deployment")
+  @visibility("read")
+  recipe?: RecipeStatus;
 
   @doc("Properties of an output resource")
   @extension("x-ms-identifiers", [])

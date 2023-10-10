@@ -192,7 +192,12 @@ func TestSqlDatabase_ConvertDataModelToVersioned(t *testing.T) {
 						},
 					},
 					ProvisioningState: to.Ptr(ProvisioningStateAccepted),
-					Status:            resourcetypeutil.MustPopulateResourceStatus(&ResourceStatus{}),
+					Status: resourcetypeutil.MustPopulateResourceStatus(&ResourceStatus{
+						Recipe: &RecipeStatus{
+							TemplateKind: to.Ptr("bicep"),
+							TemplatePath: to.Ptr("br:sampleregistry.azureacr.io/radius/recipes/abc"),
+						},
+					}),
 				},
 				Tags: map[string]*string{
 					"env": to.Ptr("dev"),

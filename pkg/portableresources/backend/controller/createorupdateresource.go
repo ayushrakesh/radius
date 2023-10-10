@@ -119,15 +119,24 @@ func (c *CreateOrUpdateResource[P, T]) Run(ctx context.Context, req *ctrl.Reques
 			return ctrl.Result{}, err
 		}
 	}
-
 	if recipeDataModel.Recipe() != nil {
 		recipeDataModel.Recipe().DeploymentStatus = util.Success
+	}
+
+	datamodel := recipeDataModel.(rpv1.RadiusResourceModel)
+
+	// Set recipe details on the resource metadata used at creation time.
+	if datamodel.ResourceMetadata().Status.Recipe == nil {
+		datamodel.ResourceMetadata().Status.Recipe = &rpv1.RecipeStatus{
+			TemplateKind: recipeOutput.Status.TemplateKind,
+			TemplatePath: recipeOutput.Status.TemplatePath,
+		}
 	}
 	update := &store.Object{
 		Metadata: store.Metadata{
 			ID: req.ResourceID,
 		},
-		Data: recipeDataModel.(rpv1.RadiusResourceModel),
+		Data: datamodel,
 	}
 	err = c.StorageClient().Save(ctx, update, store.WithETag(obj.ETag))
 	if err != nil {
