@@ -108,6 +108,18 @@ func Test_TerraformRecipe_KubernetesRedis(t *testing.T) {
 				require.NoError(t, err)
 				require.Equal(t, secretNamespace, secret.Namespace)
 				require.Equal(t, secretPrefix+secretSuffix, secret.Name)
+
+				redis, err := test.Options.ManagementClient.ShowResource(ctx, "Applications.Core/extenders", name)
+				require.NoError(t, err)
+				require.NotNil(t, redis)
+				status := redis.Properties["status"].(map[string]any)
+				recipe := status["recipe"].(map[string]interface{})
+				require.Equal(t, "terraform", recipe["templateKind"].(string))
+				fmt.Println("@@@@@ templatepath: ", recipe["templatePath"])
+				fmt.Println("@@@@@ templateversion: ", recipe["templateVersion"])
+				templatePath := strings.Split(recipe["templatePath"].(string), ":")[0]
+				require.Equal(t, "radiusdev.azurecr.io/test/functional/shared/recipes/redis-recipe-value-backed", templatePath)
+
 			},
 		},
 	})
