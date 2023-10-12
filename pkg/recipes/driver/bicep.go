@@ -354,9 +354,9 @@ func (d *bicepDriver) prepareRecipeResponse(templatePath string, outputs any, re
 		if result, ok := out[recipes.ResultPropertyName].(map[string]any); ok {
 			if resultValue, ok := result["value"].(map[string]any); ok {
 				err := recipeResponse.PrepareRecipeResponse(&rpv1.RecipeStatus{
-					TemplateKind:    recipes.TemplateKindBicep,
-					TemplatePath:    templatePath,
-					TemplateVersion: ""}, resultValue)
+					TemplateKind: recipes.TemplateKindBicep,
+					TemplatePath: templatePath,
+				}, resultValue)
 				if err != nil {
 					return &recipes.RecipeOutput{}, err
 				}

@@ -127,6 +127,7 @@ func fromRecipeStatus(recipeStatus *rpv1.RecipeStatus) *RecipeStatus {
 		TemplateKind: to.Ptr(recipeStatus.TemplateKind),
 		TemplatePath: to.Ptr(recipeStatus.TemplatePath),
 	}
+
 	return status
 }
 
