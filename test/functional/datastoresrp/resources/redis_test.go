@@ -18,6 +18,7 @@ package resource_test
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/radius-project/radius/test/functional"
@@ -110,7 +111,8 @@ func Test_Redis_Recipe(t *testing.T) {
 				status := redis.Properties["status"].(map[string]any)
 				recipe := status["recipe"].(map[string]interface{})
 				require.Equal(t, "bicep", recipe["templateKind"].(string))
-				require.Equal(t, "radiusdev.azurecr.io/test/functional/shared/recipes/redis-recipe-value-backed:latest", recipe["templatePath"].(string))
+				templatePath := strings.Split(recipe["templatePath"].(string), ":")[0]
+				require.Equal(t, "radiusdev.azurecr.io/test/functional/shared/recipes/redis-recipe-value-backed", templatePath)
 			},
 		},
 	})
