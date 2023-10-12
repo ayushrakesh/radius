@@ -69,9 +69,12 @@ type ResourceStatus struct {
 func (in *ResourceStatus) DeepCopy(out *ResourceStatus) {
 	in.Compute = out.Compute
 	in.OutputResources = out.OutputResources
-	in.Recipe = &RecipeStatus{
-		TemplateKind: out.Recipe.TemplateKind,
-		TemplatePath: out.Recipe.TemplatePath,
+	if out.Recipe != nil {
+		in.Recipe = &RecipeStatus{
+			TemplateKind:    out.Recipe.TemplateKind,
+			TemplatePath:    out.Recipe.TemplatePath,
+			TemplateVersion: out.Recipe.TemplateVersion,
+		}
 	}
 }
 

@@ -596,6 +596,7 @@ func Test_Terraform_PrepareRecipeResponse(t *testing.T) {
 					"/planes/kubernetes/local/namespaces/default/providers/apps/Deployment/test-redis",
 					"/planes/kubernetes/local/namespaces/default/providers/core/ServiceAccount/test-service-account",
 					"/planes/kubernetes/local/namespaces/test-namespace/providers/dapr.io/Component/test-dapr",
+				},
 				Status: &rpv1.RecipeStatus{
 					TemplateKind:    recipes.TemplateKindTerraform,
 					TemplatePath:    "radiusdev.azurecr.io/recipes/functionaltest/parameters/mongodatabases/azure:1.0",
@@ -771,7 +772,7 @@ func Test_Terraform_PrepareRecipeResponse(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.desc, func(t *testing.T) {
-			recipeResponse, err := d.prepareRecipeResponse(opts.BaseOptions.Definition, tt.state)
+			recipeResponse, err := d.prepareRecipeResponse(context.Background(), opts.BaseOptions.Definition, tt.state)
 			require.Equal(t, tt.expectedErr, err)
 			require.Equal(t, tt.expectedResponse, recipeResponse)
 		})
