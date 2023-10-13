@@ -68,7 +68,7 @@ func Test_TerraformRecipe_KubernetesRedis(t *testing.T) {
 
 	test := shared.NewRPTest(t, name, []shared.TestStep{
 		{
-			Executor: step.NewDeployExecutor(template, functional.GetTerraformRecipeModuleServerURL(), "appName="+appName, "redisCacheName="+redisCacheName),
+			Executor: step.NewDeployExecutor(template, "http://localhost:8000", "appName="+appName, "redisCacheName="+redisCacheName),
 			RPResources: &validation.RPResourceSet{
 				Resources: []validation.RPResource{
 					{
