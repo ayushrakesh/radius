@@ -106,7 +106,7 @@ type RecipeOutput struct {
 
 // PrepareRecipeOutput populates the recipe output from the recipe deployment output stored in the "result" object.
 // outputs map is the value of "result" output from the recipe deployment response.
-func (ro *RecipeOutput) PrepareRecipeResponse(status *rpv1.RecipeStatus, resultValue map[string]any) error {
+func (ro *RecipeOutput) PrepareRecipeResponse(resultValue map[string]any) error {
 	b, err := json.Marshal(&resultValue)
 	if err != nil {
 		return err
@@ -131,10 +131,13 @@ func (ro *RecipeOutput) PrepareRecipeResponse(status *rpv1.RecipeStatus, resultV
 		ro.Resources = []string{}
 	}
 
-	// Set the recipe status only at deployment time.
-	if ro.Status == nil {
-		ro.Status = status
-	}
-
 	return nil
+}
+
+func (ro *RecipeOutput) AddRecipeStatus(templateKind string, templatePath string, templateVersion string) {
+	ro.Status = &rpv1.RecipeStatus{
+		TemplateKind:    templateKind,
+		TemplatePath:    templatePath,
+		TemplateVersion: templateVersion,
+	}
 }

@@ -71,17 +71,11 @@ func TestRecipeOutput_PrepareRecipeResponse(t *testing.T) {
 		},
 	}
 
-	recipeStatus := &rpv1.RecipeStatus{
-		TemplateKind:    TemplateKindBicep,
-		TemplatePath:    "testPath",
-		TemplateVersion: "testVersion",
-	}
-
 	for _, tt := range tests {
 		t.Run(tt.desc, func(t *testing.T) {
 			ro := &RecipeOutput{}
 			if !tt.expectedErr {
-				err := ro.PrepareRecipeResponse(recipeStatus, tt.result)
+				err := ro.PrepareRecipeResponse(tt.result)
 				require.NoError(t, err)
 
 				if tt.result["values"] != nil {
@@ -96,7 +90,7 @@ func TestRecipeOutput_PrepareRecipeResponse(t *testing.T) {
 					require.Equal(t, tt.recipe, *ro.Status)
 				}
 			} else {
-				err := ro.PrepareRecipeResponse(recipeStatus, tt.result)
+				err := ro.PrepareRecipeResponse(tt.result)
 				require.Error(t, err)
 				require.Equal(t, "json: unknown field \"invalid\"", err.Error())
 			}

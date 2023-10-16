@@ -364,6 +364,10 @@ func Test_Bicep_PrepareRecipeResponse_EmptyResult(t *testing.T) {
 	response := map[string]any{}
 	expectedResponse := &recipes.RecipeOutput{
 		Resources: []string{"outputResourceId"},
+		Status: &rpv1.RecipeStatus{
+			TemplateKind: recipes.TemplateKindBicep,
+			TemplatePath: "radiusdev.azurecr.io/recipes/functionaltest/parameters/mongodatabases/azure:1.0",
+		},
 	}
 
 	actualResponse, err := d.prepareRecipeResponse("radiusdev.azurecr.io/recipes/functionaltest/parameters/mongodatabases/azure:1.0", response, resources)

@@ -30,7 +30,6 @@ import (
 	"k8s.io/client-go/kubernetes"
 
 	"github.com/radius-project/radius/pkg/recipes"
-	rpv1 "github.com/radius-project/radius/pkg/rp/v1"
 
 	"github.com/radius-project/radius/pkg/recipes/terraform"
 	recipes_util "github.com/radius-project/radius/pkg/recipes/util"
@@ -147,16 +146,14 @@ func (d *terraformDriver) prepareRecipeResponse(ctx context.Context, definition 
 	if moduleOutputs != nil {
 		// We populate the recipe response from the 'result' output (if set).
 		if result, ok := moduleOutputs[recipes.ResultPropertyName].Value.(map[string]any); ok {
-			err := recipeResponse.PrepareRecipeResponse(&rpv1.RecipeStatus{
-				TemplateKind:    recipes.TemplateKindTerraform,
-				TemplatePath:    definition.TemplatePath,
-				TemplateVersion: definition.TemplateVersion,
-			}, result)
+			err := recipeResponse.PrepareRecipeResponse(result)
 			if err != nil {
 				return &recipes.RecipeOutput{}, err
 			}
 		}
 	}
+
+	recipeResponse.AddRecipeStatus(recipes.TemplateKindTerraform, definition.TemplatePath, definition.TemplateVersion)
 
 	deployedResources, err := d.getDeployedOutputResources(ctx, tfState.Values.RootModule)
 	if err != nil {

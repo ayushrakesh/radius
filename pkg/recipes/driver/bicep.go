@@ -353,16 +353,15 @@ func (d *bicepDriver) prepareRecipeResponse(templatePath string, outputs any, re
 	if ok {
 		if result, ok := out[recipes.ResultPropertyName].(map[string]any); ok {
 			if resultValue, ok := result["value"].(map[string]any); ok {
-				err := recipeResponse.PrepareRecipeResponse(&rpv1.RecipeStatus{
-					TemplateKind: recipes.TemplateKindBicep,
-					TemplatePath: templatePath,
-				}, resultValue)
+				err := recipeResponse.PrepareRecipeResponse(resultValue)
 				if err != nil {
 					return &recipes.RecipeOutput{}, err
 				}
 			}
 		}
 	}
+
+	recipeResponse.AddRecipeStatus(recipes.TemplateKindBicep, templatePath, "")
 
 	// process the 'resources' created by the template
 	for _, id := range resources {

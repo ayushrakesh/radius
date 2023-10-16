@@ -128,6 +128,10 @@ func fromRecipeStatus(recipeStatus *rpv1.RecipeStatus) *RecipeStatus {
 		TemplatePath: to.Ptr(recipeStatus.TemplatePath),
 	}
 
+	if recipeStatus.TemplateVersion != "" {
+		status.TemplateVersion = to.Ptr(recipeStatus.TemplateVersion)
+	}
+
 	return status
 }
 

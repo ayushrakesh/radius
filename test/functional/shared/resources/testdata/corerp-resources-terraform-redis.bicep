@@ -1,27 +1,27 @@
 import radius as radius
 
 @description('The URL of the server hosting test Terraform modules.')
-param moduleServer string = 'http://localhost:8000'
+param moduleServer string
 
 @description('Name of the Redis Cache resource.')
-param redisCacheName string = 'redis-rf-db'
+param redisCacheName string
 
 @description('Name of the Radius Application.')
-param appName string = 'tf-test-redis1'
+param appName string
 
 resource env 'Applications.Core/environments@2023-10-01-preview' = {
-  name: 'corerp-resources-terraform-redis-env2'
+  name: 'corerp-resources-terraform-redis-env'
   properties: {
     compute: {
       kind: 'kubernetes'
       resourceId: 'self'
-      namespace: 'corerp-resources-terraform-redis-env2'
+      namespace: 'corerp-resources-terraform-redis-env'
     }
     recipes: {
       'Applications.Core/extenders': {
         default: {
           templateKind: 'terraform'
-          templatePath: 'http://localhost:8000/kubernetes-redis.zip'
+          templatePath: '${moduleServer}/kubernetes-redis.zip'
         }
       }
     }
@@ -42,7 +42,7 @@ resource app 'Applications.Core/applications@2023-10-01-preview' = {
 }
 
 resource webapp 'Applications.Core/extenders@2023-10-01-preview' = {
-  name: 'corerp-resources-terraform-redis2'
+  name: 'corerp-resources-terraform-redis'
   properties: {
     application: app.id
     environment: env.id
