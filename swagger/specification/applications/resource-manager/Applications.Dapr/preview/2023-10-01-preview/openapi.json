@@ -1602,11 +1602,11 @@
       "properties": {
         "templateKind": {
           "type": "string",
-          "description": "Template kind is the kind of template."
+          "description": "TemplateKind is the kind of the recipe template used by the portable resource upon deployment."
         },
         "templatePath": {
           "type": "string",
-          "description": "TemplatePath is the path specified in the recipe."
+          "description": "Template path of the recipe consumed by the portable resource upon deployment."
         },
         "templateVersion": {
           "type": "string",

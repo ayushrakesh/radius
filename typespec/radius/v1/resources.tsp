@@ -104,10 +104,10 @@ model KubernetesCompute extends EnvironmentCompute {
 
 @doc("Recipe status at deployment time for a resource.")
 model RecipeStatus {
-  @doc("Template kind is the kind of template.")
+  @doc("TemplateKind is the kind of the recipe template used by the portable resource upon deployment.")
   templateKind: string;
 
-  @doc("TemplatePath is the path specified in the recipe.")
+  @doc("Template path of the recipe consumed by the portable resource upon deployment.")
   templatePath: string;
 
   @doc("TemplateVersion is the version number of the template.")
