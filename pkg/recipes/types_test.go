@@ -42,30 +42,15 @@ func TestRecipeOutput_PrepareRecipeResponse(t *testing.T) {
 				},
 				"resources": []string{"outputResourceId1"},
 			},
-			recipe: rpv1.RecipeStatus{
-				TemplateKind:    "bicep",
-				TemplatePath:    "testPath",
-				TemplateVersion: "testVersion",
-			},
 		},
 		{
 			desc:   "empty result",
 			result: map[string]any{},
-			recipe: rpv1.RecipeStatus{
-				TemplateKind:    "bicep",
-				TemplatePath:    "testPath",
-				TemplateVersion: "testVersion",
-			},
 		},
 		{
 			desc: "invalid field",
 			result: map[string]any{
 				"invalid": "invalid-field",
-			},
-			recipe: rpv1.RecipeStatus{
-				TemplateKind:    "bicep",
-				TemplatePath:    "testPath",
-				TemplateVersion: "testVersion",
 			},
 			expectedErr: true,
 		},
@@ -82,12 +67,10 @@ func TestRecipeOutput_PrepareRecipeResponse(t *testing.T) {
 					require.Equal(t, tt.result["values"], ro.Values)
 					require.Equal(t, tt.result["secrets"], ro.Secrets)
 					require.Equal(t, tt.result["resources"], ro.Resources)
-					require.Equal(t, tt.recipe, *ro.Status)
 				} else {
 					require.Equal(t, map[string]any{}, ro.Values)
 					require.Equal(t, map[string]any{}, ro.Secrets)
 					require.Equal(t, []string{}, ro.Resources)
-					require.Equal(t, tt.recipe, *ro.Status)
 				}
 			} else {
 				err := ro.PrepareRecipeResponse(tt.result)
