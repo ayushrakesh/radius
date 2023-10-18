@@ -33,6 +33,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/creack/pty"
 	"github.com/radius-project/radius/pkg/cli/bicep"
 	"github.com/radius-project/radius/pkg/cli/clients"
 	"github.com/radius-project/radius/pkg/cli/objectformats"
@@ -411,6 +412,67 @@ func Test_Run_Portforward(t *testing.T) {
 	// We should have an error, but only because we canceled the context.
 	require.Errorf(t, err, "rad run should have been canceled")
 	require.Equal(t, err, ctx.Err(), "rad run should have been canceled")
+}
+
+func Test_Run_RadInit(t *testing.T) {
+	ctx, cancel := testcontext.NewWithCancel(t)
+	t.Cleanup(cancel)
+
+	options := shared.NewRPTestOptions(t)
+	cli := radcli.NewCLI(t, options.ConfigFilePath)
+
+	args := []string{
+		"init",
+	}
+
+	// rad init will prompt for input, so we need to pipe in the answers.
+	cmd, heartbeat, description := cli.CreateCommand(ctx, args)
+
+	// Read from stdout to get the logs.
+	stdout, err := cmd.StdoutPipe()
+	require.NoError(t, err)
+
+	f, err := pty.Start(cmd)
+	require.NoError(t, err)
+
+	// Write to stdin to provide input.
+	go func() {
+		f.Write([]byte("j"))
+		f.Write([]byte(" "))
+	}()
+
+	// Start heartbeat to trigger logging
+	done := make(chan struct{})
+	go heartbeat(done)
+
+	// Read the text line-by-line while the command is running, but store it so we can report failures.
+	output := bytes.Buffer{}
+	scanner := bufio.NewScanner(stdout)
+	scanner.Split(bufio.ScanLines)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		output.WriteString(line)
+		output.WriteString("\n")
+	}
+
+	// It's only safe to call wait when we've read all of the output.
+	err = cmd.Wait()
+	err = cli.ReportCommandResult(ctx, output.String(), description, err)
+
+	t.Run("Check dev recipes", func(t *testing.T) {
+		// Create a new context since we canceled the outer one.
+		ctx, cancel := testcontext.NewWithCancel(t)
+		t.Cleanup(cancel)
+
+		output, err := cli.RecipeList(ctx, "default")
+		require.NoError(t, err)
+		require.Contains(t, output, "pubsubbrokers")
+	})
+
+	// // We should have an error, but only because we canceled the context.
+	// require.Errorf(t, err, "rad init should have been canceled")
+	// require.Equal(t, err, ctx.Err(), "rad init should have been canceled")
 }
 
 func Test_CLI(t *testing.T) {

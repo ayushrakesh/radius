@@ -136,7 +136,7 @@ func (m ListModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+c", "q":
 			m.Quitting = true
 			return m, tea.Quit
-		case "enter":
+		case "enter", " ":
 			if m.List.FilterState() != list.Filtering {
 				i, ok := m.List.SelectedItem().(item)
 				if ok {
