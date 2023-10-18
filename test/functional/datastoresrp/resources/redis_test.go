@@ -112,7 +112,7 @@ func Test_Redis_Recipe(t *testing.T) {
 				recipe := status["recipe"].(map[string]interface{})
 				require.Equal(t, "bicep", recipe["templateKind"].(string))
 				templatePath := strings.Split(recipe["templatePath"].(string), ":")[0]
-				require.Equal(t, "radiusdev.azurecr.io/test/functional/shared/recipes/redis-recipe-value-backed", templatePath)
+				require.Equal(t, "ghcr.io/radius-project/dev/test/functional/shared/recipes/redis-recipe-value-backed", templatePath)
 			},
 		},
 	})
