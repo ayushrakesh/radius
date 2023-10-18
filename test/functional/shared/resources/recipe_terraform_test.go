@@ -116,10 +116,11 @@ func Test_TerraformRecipe_KubernetesRedis(t *testing.T) {
 				recipe := status["recipe"].(map[string]interface{})
 				require.Equal(t, "terraform", recipe["templateKind"].(string))
 				fmt.Println("@@@@@@ recipe[templateKind]: ", recipe["templateKind"].(string))
+				fmt.Println("@@@@@@ recipe[templatePath]: ", recipe["templatePath"].(string))
 				temp := strings.Split(recipe["templatePath"].(string), ":")
-				templatePath := temp[0] + temp[1]
+				templatePath := temp[0] + ":" + temp[1]
 				fmt.Println("@@@@@@ templatePath: ", templatePath)
-				require.Equal(t, "http://ghcr.io/radius-project/dev/test/functional/shared/recipes/redis-recipe-value-backed", templatePath)
+				require.Equal(t, "http://tf-module-server.radius-test-tf-module-server.svc.cluster.local/kubernetes-redis.zip", templatePath)
 				// At present, it is not possible to verify the template version in functional tests
 				// This is verified by UTs though
 			},
