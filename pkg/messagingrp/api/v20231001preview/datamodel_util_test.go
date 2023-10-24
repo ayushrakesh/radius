@@ -67,7 +67,7 @@ func TestFromProvisioningStateDataModel(t *testing.T) {
 	}
 }
 
-func TestFromRecipeStatus(t *testing.T) {
+func Test_FromRecipeStatus(t *testing.T) {
 	testCases := []struct {
 		recipeStatus *rpv1.RecipeStatus
 		expected     *RecipeStatus
