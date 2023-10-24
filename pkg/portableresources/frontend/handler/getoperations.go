@@ -55,16 +55,6 @@ func (opctrl *GetOperations) availableOperationsV1() *v1.PaginatedList {
 	return &v1.PaginatedList{
 		Value: []any{
 			&v1.Operation{
-				Name: "Applications.Dapr/operations/read",
-				Display: &v1.OperationDisplayProperties{
-					Provider:    DaprProviderNamespace,
-					Resource:    "operations",
-					Operation:   "Get operations",
-					Description: "Get the list of operations.",
-				},
-				IsDataAction: false,
-			},
-			&v1.Operation{
 				Name: "Applications.Datastores/operations/read",
 				Display: &v1.OperationDisplayProperties{
 					Provider:    DatastoresProviderNamespace,
@@ -135,16 +125,6 @@ func (opctrl *GetOperations) availableOperationsV1() *v1.PaginatedList {
 				IsDataAction: false,
 			},
 			&v1.Operation{
-				Name: "Applications.Dapr/register/action",
-				Display: &v1.OperationDisplayProperties{
-					Provider:    DaprProviderNamespace,
-					Resource:    DaprProviderNamespace,
-					Operation:   "Register Applications.Dapr resource provider",
-					Description: "Registers 'Applications.Dapr' resource provider with a subscription.",
-				},
-				IsDataAction: false,
-			},
-			&v1.Operation{
 				Name: "Applications.Messaging/register/action",
 				Display: &v1.OperationDisplayProperties{
 					Provider:    MessagingProviderNamespace,
@@ -161,16 +141,6 @@ func (opctrl *GetOperations) availableOperationsV1() *v1.PaginatedList {
 					Resource:    "Applications.Datastores",
 					Operation:   "Unregister 'Applications.Datastores' resource provider",
 					Description: "Unregisters 'Applications.Datastores' resource provider with a subscription.",
-				},
-				IsDataAction: false,
-			},
-			&v1.Operation{
-				Name: "Applications.Dapr/unregister/action",
-				Display: &v1.OperationDisplayProperties{
-					Provider:    DaprProviderNamespace,
-					Resource:    "Applications.Datastores",
-					Operation:   "Unregister 'Applications.Dapr' resource provider",
-					Description: "Unregisters 'Applications.Dapr' resource provider with a subscription.",
 				},
 				IsDataAction: false,
 			},
@@ -291,96 +261,6 @@ func (opctrl *GetOperations) availableOperationsV1() *v1.PaginatedList {
 					Resource:    "rabbitMQQueues",
 					Operation:   "List secrets",
 					Description: "Lists rabbitMQQueue secrets.",
-				},
-				IsDataAction: false,
-			},
-			&v1.Operation{
-				Name: "Applications.Dapr/secretStores/read",
-				Display: &v1.OperationDisplayProperties{
-					Provider:    DaprProviderNamespace,
-					Resource:    "daprSecretStores",
-					Operation:   "Get/List daprSecretStores",
-					Description: "Gets/Lists daprSecretStore resource(s).",
-				},
-				IsDataAction: false,
-			},
-			&v1.Operation{
-				Name: "Applications.Dapr/secretStores/write",
-				Display: &v1.OperationDisplayProperties{
-					Provider:    DaprProviderNamespace,
-					Resource:    "daprSecretStores",
-					Operation:   "Create/Update daprSecretStores",
-					Description: "Creates or updates a daprSecretStore resource.",
-				},
-				IsDataAction: false,
-			},
-			&v1.Operation{
-				Name: "Applications.Dapr/secretStores/delete",
-				Display: &v1.OperationDisplayProperties{
-					Provider:    DaprProviderNamespace,
-					Resource:    "daprSecretStores",
-					Operation:   "Delete daprSecretStore",
-					Description: "Deletes a daprSecretStore resource.",
-				},
-				IsDataAction: false,
-			},
-			&v1.Operation{
-				Name: "Applications.Dapr/stateStores/read",
-				Display: &v1.OperationDisplayProperties{
-					Provider:    DaprProviderNamespace,
-					Resource:    "daprStateStores",
-					Operation:   "Get/List daprStateStores",
-					Description: "Gets/Lists daprStateStore resource(s).",
-				},
-				IsDataAction: false,
-			},
-			&v1.Operation{
-				Name: "Applications.Dapr/stateStores/write",
-				Display: &v1.OperationDisplayProperties{
-					Provider:    DaprProviderNamespace,
-					Resource:    "daprStateStores",
-					Operation:   "Create/Update daprStateStores",
-					Description: "Creates or updates a daprStateStore resource.",
-				},
-				IsDataAction: false,
-			},
-			&v1.Operation{
-				Name: "Applications.Dapr/stateStores/delete",
-				Display: &v1.OperationDisplayProperties{
-					Provider:    DaprProviderNamespace,
-					Resource:    "daprStateStores",
-					Operation:   "Delete daprStateStore",
-					Description: "Deletes a daprStateStore resource.",
-				},
-				IsDataAction: false,
-			},
-			&v1.Operation{
-				Name: "Applications.Dapr/pubSubBrokers/read",
-				Display: &v1.OperationDisplayProperties{
-					Provider:    DaprProviderNamespace,
-					Resource:    "daprPubSubBrokers",
-					Operation:   "Get/List daprPubSubBrokers",
-					Description: "Gets/Lists daprPubSubBroker resource(s).",
-				},
-				IsDataAction: false,
-			},
-			&v1.Operation{
-				Name: "Applications.Dapr/pubSubBrokers/write",
-				Display: &v1.OperationDisplayProperties{
-					Provider:    DaprProviderNamespace,
-					Resource:    "daprPubSubBrokers",
-					Operation:   "Create/Update daprPubSubBrokers",
-					Description: "Creates or updates a daprPubSubBroker resource.",
-				},
-				IsDataAction: false,
-			},
-			&v1.Operation{
-				Name: "Applications.Dapr/pubSubBrokers/delete",
-				Display: &v1.OperationDisplayProperties{
-					Provider:    DaprProviderNamespace,
-					Resource:    "daprPubSubBrokers",
-					Operation:   "Delete daprPubSubBroker",
-					Description: "Deletes a daprPubSubBroker resource.",
 				},
 				IsDataAction: false,
 			},
