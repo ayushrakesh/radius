@@ -52,9 +52,6 @@ type Validator struct {
 
 	// OutputResources stores the output resources extracted from the data model and recipe output.
 	OutputResources *[]rpv1.OutputResource
-
-	// RecipeStatus stores the recipe status extracted from the recipe output.
-	Recipe *rpv1.RecipeStatus
 }
 
 // NewValidator initializes and returns a new Validator instance with empty data structures for connection values,
@@ -70,7 +67,6 @@ func NewValidator(connectionValues *map[string]any, connectionSecrets *map[strin
 		ConnectionValues:  *connectionValues,
 		ConnectionSecrets: *connectionSecrets,
 		OutputResources:   outputResources,
-		Recipe:            recipeStatus,
 	}
 }
 
@@ -165,7 +161,6 @@ func (v *Validator) SetAndValidate(output *recipes.RecipeOutput) error {
 
 		*v.OutputResources = append(*v.OutputResources, recipeResources...)
 
-		v.Recipe = output.Status
 	}
 
 	if v.resourcesField != nil {
