@@ -125,8 +125,8 @@ func (c *CreateOrUpdateResource[P, T]) Run(ctx context.Context, req *ctrl.Reques
 
 	datamodel := recipeDataModel.(rpv1.RadiusResourceModel)
 
-	// Set recipe details on the resource metadata used at creation time.
-	if recipeOutput != nil && recipeOutput.Status != nil && datamodel.ResourceMetadata().Status.Recipe == nil {
+	// Set recipe details on the resource metadata used.
+	if recipeOutput != nil && recipeOutput.Status != nil {
 		datamodel.ResourceMetadata().Status.Recipe = &rpv1.RecipeStatus{
 			TemplateKind:    recipeOutput.Status.TemplateKind,
 			TemplatePath:    recipeOutput.Status.TemplatePath,
