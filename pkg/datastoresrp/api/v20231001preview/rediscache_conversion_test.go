@@ -221,12 +221,7 @@ func TestRedisCache_ConvertDataModelToVersioned(t *testing.T) {
 					Recipe:               &Recipe{Name: to.Ptr("redis-test"), Parameters: map[string]any{"port": float64(6081)}},
 					Username:             to.Ptr(""),
 					TLS:                  to.Ptr(false),
-					Status: resourcetypeutil.MustPopulateResourceStatus(&ResourceStatus{
-						Recipe: &RecipeStatus{
-							TemplateKind: to.Ptr("bicep"),
-							TemplatePath: to.Ptr("br:sampleregistry.azureacr.io/radius/recipes/abc"),
-						},
-					}),
+					Status:               resourcetypeutil.MustPopulateResourceStatusWithRecipe(&ResourceStatus{}),
 				},
 				Tags: map[string]*string{
 					"env": to.Ptr("dev"),
