@@ -43,7 +43,7 @@ const (
 func SetupNamespace(recipeControllerConfig *controllerconfig.RecipeControllerConfig) *builder.Namespace {
 	ns := builder.NewNamespace("Applications.Dapr")
 
-	_ = ns.AddResource("daprPubSubBrokers", &builder.ResourceOption[*datamodel.DaprPubSubBroker, datamodel.DaprPubSubBroker]{
+	_ = ns.AddResource("pubSubBrokers", &builder.ResourceOption[*datamodel.DaprPubSubBroker, datamodel.DaprPubSubBroker]{
 		RequestConverter:  converter.PubSubBrokerDataModelFromVersioned,
 		ResponseConverter: converter.PubSubBrokerDataModelToVersioned,
 
@@ -76,7 +76,7 @@ func SetupNamespace(recipeControllerConfig *controllerconfig.RecipeControllerCon
 		},
 	})
 
-	_ = ns.AddResource("daprStateStores", &builder.ResourceOption[*datamodel.DaprStateStore, datamodel.DaprStateStore]{
+	_ = ns.AddResource("stateStores", &builder.ResourceOption[*datamodel.DaprStateStore, datamodel.DaprStateStore]{
 		RequestConverter:  converter.StateStoreDataModelFromVersioned,
 		ResponseConverter: converter.StateStoreDataModelToVersioned,
 
@@ -109,7 +109,7 @@ func SetupNamespace(recipeControllerConfig *controllerconfig.RecipeControllerCon
 		},
 	})
 
-	_ = ns.AddResource("daprSecretStores", &builder.ResourceOption[*datamodel.DaprSecretStore, datamodel.DaprSecretStore]{
+	_ = ns.AddResource("secretStores", &builder.ResourceOption[*datamodel.DaprSecretStore, datamodel.DaprSecretStore]{
 		RequestConverter:  converter.SecretStoreDataModelFromVersioned,
 		ResponseConverter: converter.SecretStoreDataModelToVersioned,
 
