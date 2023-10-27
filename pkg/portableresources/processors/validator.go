@@ -52,6 +52,9 @@ type Validator struct {
 
 	// OutputResources stores the output resources extracted from the data model and recipe output.
 	OutputResources *[]rpv1.OutputResource
+
+	// Status stores the recipe status extracted from the recipe output.
+	Status *rpv1.RecipeStatus
 }
 
 // NewValidator initializes and returns a new Validator instance with empty data structures for connection values,
@@ -171,6 +174,8 @@ func (v *Validator) SetAndValidate(output *recipes.RecipeOutput) error {
 
 		*v.OutputResources = append(*v.OutputResources, userResources...)
 	}
+
+	v.Status = output.Status
 
 	for _, field := range v.fields {
 		msg := field(output)

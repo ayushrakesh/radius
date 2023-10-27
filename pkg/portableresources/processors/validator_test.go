@@ -787,3 +787,24 @@ func Test_Validator_SetAndValidate_MultipleErrors(t *testing.T) {
 	require.IsType(t, &ValidationError{}, err)
 	require.Equal(t, "validation returned multiple errors:\n\nthe connection value \"one\" must be provided when not using a recipe. Set '.properties.one' to provide a value manually\nthe connection value \"two\" must be provided when not using a recipe. Set '.properties.two' to provide a value manually", err.Error())
 }
+
+func Test_Validator_SetAndValidate_Status(t *testing.T) {
+	t.Run("status", func(t *testing.T) {
+		outputResources := []rpv1.OutputResource{}
+		values := map[string]any{}
+		secrets := map[string]rpv1.SecretValueReference{}
+
+		v := NewValidator(&values, &secrets, &outputResources)
+		recipeOutput := recipes.RecipeOutput{
+			Status: &rpv1.RecipeStatus{
+				TemplateKind:    "terraform",
+				TemplateVersion: "v1",
+				TemplatePath:    "/abc/def",
+			},
+		}
+		err := v.SetAndValidate(&recipeOutput)
+		require.NoError(t, err)
+
+		require.Equal(t, v.Status, recipeOutput.Status)
+	})
+}
