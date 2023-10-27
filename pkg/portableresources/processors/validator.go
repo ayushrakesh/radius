@@ -175,7 +175,9 @@ func (v *Validator) SetAndValidate(output *recipes.RecipeOutput) error {
 		*v.OutputResources = append(*v.OutputResources, userResources...)
 	}
 
-	v.Status = output.Status
+	if output != nil {
+		v.Status = output.Status
+	}
 
 	for _, field := range v.fields {
 		msg := field(output)
